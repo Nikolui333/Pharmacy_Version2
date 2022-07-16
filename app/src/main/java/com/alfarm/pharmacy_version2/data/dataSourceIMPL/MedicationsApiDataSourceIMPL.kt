@@ -1,6 +1,7 @@
 package com.alfarm.pharmacy_version2.data.dataSourceIMPL
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.alfarm.pharmacy_version2.data.api.ApiClient
 import com.alfarm.pharmacy_version2.data.dataSource.MedicationsApiDataSource
@@ -38,7 +39,7 @@ class MedicationsApiDataSourceIMPL (private val medicationsDataSource: Medicatio
                             it,
                             audit.name.toString(),
                             audit.image.toString(),
-                            audit.description.toString(),
+                          //  audit.description.toString(),
                             audit.price.toString()
                         )
                     }?.let {
@@ -53,7 +54,9 @@ class MedicationsApiDataSourceIMPL (private val medicationsDataSource: Medicatio
             }
 
             override fun onFailure(call: Call<ArrayList<MedicationsApiModel>>, t: Throwable) {
+                /*Log.d("newlog", */t.printStackTrace()/*.toString()*//*)*/
                 Toast.makeText(context, "ОШИБКА! ВКЛЮЧИТЕ ИНТЕРНЕТ!", Toast.LENGTH_SHORT).show()
+
 
             }
         })

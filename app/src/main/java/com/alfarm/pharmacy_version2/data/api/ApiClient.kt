@@ -20,7 +20,7 @@ class ApiClient private constructor() {
     // переменные, объявленные внутри companion существуют только в одном экземпляре
     companion object {
 
-        private val BASE_URL = "http://pharmacyserver.nikolyla.beget.tech/"
+        private val BASE_URL = "http://pharmacyserverv2.nikolyla.beget.tech/"
 
         private var apiClient: ApiClient? = null
         private var retrofit: Retrofit? = null

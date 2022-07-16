@@ -11,8 +11,8 @@ data class MedicationsApiModel (
     var image: String? = null,
     @SerializedName("name") @Expose
     var name: String? = null,
-    @SerializedName("description") @Expose
-    var description: String? = null,
+/*    @SerializedName("description") @Expose
+    var description: String? = null,*/
     @SerializedName("price") @Expose
     var price: String? = null
 )

@@ -52,7 +52,6 @@ class MedicationsAdapter (private val addToCard:(MedicationsModel)->Unit, privat
             // получаем изображение, которое находится по ссылке и добавляем его в imageMedications
             Picasso.get().load(getImage).into(binding.imageMedications)
             binding.nameMedications.text = medicationsModel.name
-            binding.descriptionMedications.text = medicationsModel.description
             binding.priceMedications.text = medicationsModel.price
 
             binding.addToCard.setOnClickListener(View.OnClickListener {

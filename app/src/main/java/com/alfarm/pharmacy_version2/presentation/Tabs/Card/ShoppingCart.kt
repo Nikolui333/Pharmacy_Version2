@@ -5,56 +5,133 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alfarm.pharmacy_version2.R
+import com.alfarm.pharmacy_version2.data.models.CardModel
+import com.alfarm.pharmacy_version2.databinding.FragmentShoppingCartBinding
+import com.alfarm.pharmacy_version2.presentation.viewModel.CardViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.lifecycle.Observer
+import com.alfarm.pharmacy_version2.presentation.Tabs.Checkout
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class ShoppingCart : Fragment(),View.OnClickListener {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ShoppingCart.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ShoppingCart : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var binding: FragmentShoppingCartBinding? = null
+    private var cardAdapter: CardAdapter? = null
+    private val cardViewModel: CardViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shopping_cart, container, false)
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_shopping_cart, container, false)
+        initRecyclerCard()
+        loadMedicineFromCard()
+
+        // обработка нажатий по кнопке (очистка корзины)
+        binding?.clearCard?.setOnClickListener(this)
+        // обработка нажатия по кнопке (оформление заказа)
+        binding?.checkoutCard?.setOnClickListener(this)
+
+        return binding?.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ShoppingCart.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ShoppingCart().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    // инициализация
+    private fun initRecyclerCard() {
+
+        binding?.listCard?.layoutManager =
+            LinearLayoutManager(context)
+        cardAdapter =
+            CardAdapter ({ cardModel: CardModel ->
+                deleteFromCard(
+                    cardModel
+                )
+            }, { cardModel: CardModel ->
+                lessCount(
+                    cardModel
+                )
+            }, { cardModel: CardModel ->
+                moreCount(
+                    cardModel
+                )
+            })
+        binding?.listCard?.adapter = cardAdapter
+    }
+
+    // загрузка всех товаров из корзины
+    private fun loadMedicineFromCard() {
+
+        cardViewModel.loadMedicineFromCard.observe(viewLifecycleOwner, Observer {
+            cardAdapter?.setList(it)
+            cardAdapter?.notifyDataSetChanged()
+            // сложение суммарных стоимостей каждого товара (sumOf - суммировать всё)
+            val total:Int = it.sumOf<CardModel>
+            // суммировать поля totalPrice
+            { it.totalPrice.toInt() }
+
+            binding?.totalOrder?.text = total.toString()
+
+        })
+    }
+
+    private fun deleteFromCard(cardModel: CardModel){
+
+        cardViewModel.deleteProductFromCard(cardModel.id)
+    }
+
+    // обработка кликов по кнопкам
+    override fun onClick(view: View) {
+        when(view.id) {
+            // очистка корзины
+            R.id.clearCard -> cardViewModel.clearCard()
+            // отправка заказа
+            R.id.checkoutCard -> {
+                // запуск фрагмента (выезжающей панели) для ввода данных пользователя
+                val checkout = Checkout()
+                checkout.show((context as FragmentActivity).supportFragmentManager, "checkout")
+
             }
+        }
+    }
+
+    // уменьшение колличества единиц товара
+    private fun lessCount(cardModel:CardModel) {
+
+        var count: Int = cardModel.count.toInt()
+        count--
+        if (count<1) { // если count<1 вывести 1
+            cardViewModel.updateProductToCard(
+                CardModel(cardModel.id, cardModel.name,
+                    cardModel.image, cardModel.price, cardModel.idProduct, "1",
+                    (cardModel.price.toInt()*1).toString())
+            )
+
+        }
+        else {
+
+            cardViewModel.updateProductToCard(
+                CardModel(cardModel.id, cardModel.name,
+                    cardModel.image, cardModel.price, cardModel.idProduct, count.toString(),
+                    // получение итоговой стоимости
+                    (cardModel.price.toInt()*count).toString())
+            )
+
+        }
+    }
+    // увеличение колличества единиц товара
+    private fun moreCount(cardModel:CardModel) {
+
+        // получаем колличество товара
+        var count: Int = cardModel.count.toInt()
+        count++
+
+        cardViewModel.updateProductToCard(
+            CardModel(cardModel.id, cardModel.name,
+                cardModel.image, cardModel.price, cardModel.idProduct, count.toString(),
+                (cardModel.price.toInt()*count).toString())
+        )
     }
 }

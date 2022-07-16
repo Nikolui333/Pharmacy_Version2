@@ -5,56 +5,104 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alfarm.pharmacy_version2.R
+import com.alfarm.pharmacy_version2.data.models.MedicationsModel
+import com.alfarm.pharmacy_version2.presentation.viewModel.CardViewModel
+import com.alfarm.pharmacy_version2.presentation.viewModel.MedicationsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.lifecycle.Observer
+import com.alfarm.pharmacy_version2.databinding.FragmentMedicineBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Medicine.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Medicine : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var binding: FragmentMedicineBinding? = null
+    private var medicationsAdapter: MedicationsAdapter? = null
+    private val medicationsViewModel: MedicationsViewModel by viewModel()
+    private val cardViewModel: CardViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_medicine, container, false)
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_medicine, container, false)
+
+        initRecyclerMedications()
+        loadMedicine()
+
+        return binding?.root
+    }
+    // инициализация адаптера
+    private fun initRecyclerMedications() {
+        // вертикальный макет recyclerView
+        binding?.catalogMedications?.layoutManager =
+            LinearLayoutManager(context)
+        medicationsAdapter =
+            MedicationsAdapter ({ medicationsModel: MedicationsModel ->
+                addToCard(
+                    medicationsModel
+                )
+            }, { medicationsModel: MedicationsModel ->
+                removeFromCard(
+                    medicationsModel
+                )
+                // отображение кнопок добавления или удаления товара
+            }, { idProduct:Int, addToBasket: AppCompatImageButton,
+                 removeFromBasket: AppCompatImageButton ->
+                loadMedicineToCardFromCardProduct(
+                    idProduct, addToBasket, removeFromBasket
+                )
+            })
+        binding?.catalogMedications?.adapter = medicationsAdapter
+
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Medicine.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Medicine().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun loadMedicine() {
+        // получение всех необходимых данных для заполнения recyclerView
+        medicationsViewModel.loadMedicines.observe(viewLifecycleOwner, Observer {
+            // setList наполняет адаптер данными
+            medicationsAdapter?.setList(it)
+            // notifyDataSetChanged обновляет адаптер
+            medicationsAdapter?.notifyDataSetChanged()
+        })
+    }
+
+    // добавление товара в корзину
+    private fun addToCard(medicationsModel: MedicationsModel) {
+        cardViewModel.startInsert(medicationsModel.name,
+            medicationsModel.image,
+            medicationsModel.price,
+            medicationsModel.id.toString(),
+            "1")
+    }
+
+    // удаление товара из корзины
+    private fun removeFromCard(medicationsModel: MedicationsModel) {
+        cardViewModel.deleteProductToCardFromCardProduct(medicationsModel.id.toString())
+    }
+
+    // проверяем, есть ли товар в корзине и узнаём его колличество
+    private fun loadMedicineToCardFromCardProduct (idProduct:Int, addToBasket: AppCompatImageButton,
+                                                   removeFromBasket: AppCompatImageButton
+    ){
+        // передаём id, который приходит из адаптера
+        cardViewModel.loadMedicineToCardFromCardProduct(idProduct.toString()).observe(viewLifecycleOwner, Observer {
+
+            // в переменную count получаем колличество товара
+            val count = it.count() // it - это неявное имя одного параметра в лямбда-функции
+
+            // если колличество больше нуля, убрать кнопку добавления и отобразить кнопку удаления
+            if (count>0) {
+                addToBasket.visibility = View.GONE
+                removeFromBasket.visibility = View.VISIBLE
             }
+            else {
+                addToBasket.visibility = View.VISIBLE
+                removeFromBasket.visibility = View.GONE }
+        })
+
     }
 }

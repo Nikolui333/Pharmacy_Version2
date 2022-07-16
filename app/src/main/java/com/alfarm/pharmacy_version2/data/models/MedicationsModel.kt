@@ -17,8 +17,8 @@ class MedicationsModel (
     @ColumnInfo(name = "pharmacy_image")
     val image:String,
 
-    @ColumnInfo(name = "pharmacy_description")
-    val description:String,
+/*    @ColumnInfo(name = "pharmacy_description")
+    val description:String,*/
 
     @ColumnInfo(name = "pharmacy_price")
     val price:String
