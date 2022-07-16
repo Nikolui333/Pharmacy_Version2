@@ -1,0 +1,26 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Pharmacy_Version2</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="home">ДОМОЙ</string>
+    <string name="medical_services">ЛЕКАРСТВА</string>
+    <string name="shopping_cart">КОРЗИНА</string>
+    <string name="account">ИСТОРИЯ</string>
+
+    <string name="ruble">Р</string>
+    <string name="clearCard">ОЧИСТИТЬ КОРЗИНУ</string>
+    <string name="clearOrders">ОЧИСТИТЬ ИСТОРИЮ</string>
+    <string name="checkout">ЗАКАЗАТЬ</string>
+    <string name="totalOrder">ИТОГО:</string>
+    <string name="yourName">Ваше имя</string>
+    <string name="yourPhone">Ваш телефон</string>
+    <string name="submit">ОТПРАВИТЬ</string>
+    <string name="mainHeader">Альянс-Фарм</string>
+    <string name="descriptionPharmacy">We care about your health</string>
+    <string name="salePropOne">Телефон</string>
+    <string name="salePropTwo">Адрес</string>
+    <string name="headerPropOne" tools:ignore="TypographyDashes">8 (495) 327-32-15</string>
+    <string name="headerPropTwo" tools:ignore="TypographyDashes">Запрудня, ул. Первомайская, д. 6, помещения 34-42</string>
+    <string name="descriptionProposal">Альянс-Фарм</string>
+</resources>
