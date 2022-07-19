@@ -5,7 +5,7 @@ import com.alfarm.pharmacy_version2.data.dataSource.MedicationsApiDataSource
 import com.alfarm.pharmacy_version2.data.dataSource.MedicationsDataSource
 import com.alfarm.pharmacy_version2.data.dataSourceIMPL.MedicationsApiDataSourceIMPL
 import com.alfarm.pharmacy_version2.data.dataSourceIMPL.MedicationsDataSourceIMPL
-import com.alfarm.pharmacy_version2.data.localDB.DataBasePharmacy
+import com.alfarm.pharmacy_version2.data.localDB.DBPharmacy
 import com.alfarm.pharmacy_version2.data.repository.CardRepository
 import com.alfarm.pharmacy_version2.data.repository.MedicationsRepository
 import com.alfarm.pharmacy_version2.data.repository.OrderApiRepository
@@ -25,11 +25,11 @@ import org.koin.dsl.module
 val medicines = module{
 
     single {
-        Room.databaseBuilder(androidContext(), DataBasePharmacy::class.java,
+        Room.databaseBuilder(androidContext(), DBPharmacy::class.java,
             "dbC").build()
     }
 
-    single { get<DataBasePharmacy>().medicationsDao }
+    single { get<DBPharmacy>().medicationsDao }
 
 
     single<MedicationsDataSource> {
@@ -55,11 +55,11 @@ val medicines = module{
 val card = module{
 
     single {
-        Room.databaseBuilder(androidContext(), DataBasePharmacy::class.java,
+        Room.databaseBuilder(androidContext(), DBPharmacy::class.java,
             "dbO").build()
     }
 
-    single { get<DataBasePharmacy>().cardDao }
+    single { get<DBPharmacy>().cardDao }
 
 
     single<CardCall> { CardRepository(get()) }

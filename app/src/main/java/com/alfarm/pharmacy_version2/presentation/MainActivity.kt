@@ -12,7 +12,7 @@ import com.alfarm.pharmacy_version2.presentation.Tabs.Medications.Medicine
 import com.alfarm.pharmacy_version2.presentation.viewModel.MedicationsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity()/*, SearchView.OnQueryTextListener*/ {
+class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
 

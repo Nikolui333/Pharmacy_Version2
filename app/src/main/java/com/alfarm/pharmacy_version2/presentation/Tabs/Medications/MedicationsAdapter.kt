@@ -15,7 +15,7 @@ class MedicationsAdapter (private val addToCard:(MedicationsModel)->Unit, privat
                           private val loadMedicationsToCardFromCardProduct:(Int, AppCompatImageButton, AppCompatImageButton)->Unit):
     RecyclerView.Adapter<MedicationsAdapter.MedicationsHolder>() {
 
-    private val medications = ArrayList<MedicationsModel>()
+    private var medications = ArrayList<MedicationsModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicationsHolder {
 
@@ -37,6 +37,11 @@ class MedicationsAdapter (private val addToCard:(MedicationsModel)->Unit, privat
     fun setList(medicationsList: List<MedicationsModel>) {
         medications.clear()
         medications.addAll(medicationsList) // заполнение medications данными
+    }
+
+    fun setData(newData: ArrayList<MedicationsModel>){
+        medications = newData
+        notifyDataSetChanged()
     }
 
     class MedicationsHolder(val binding: MedicinesItemBinding) : RecyclerView.ViewHolder(binding.root) {

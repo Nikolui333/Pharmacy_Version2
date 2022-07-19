@@ -3,6 +3,7 @@ package com.alfarm.pharmacy_version2.presentation.Tabs.Medications
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -14,7 +15,7 @@ import com.alfarm.pharmacy_version2.presentation.viewModel.CardViewModel
 import com.alfarm.pharmacy_version2.presentation.viewModel.MedicationsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class Medicine : Fragment()/*, SearchView.OnQueryTextListener*/ {
+class Medicine : Fragment(), SearchView.OnQueryTextListener {
 
     private var binding: FragmentMedicineBinding? = null
     private var medicationsAdapter: MedicationsAdapter? = null
@@ -53,6 +54,27 @@ class Medicine : Fragment()/*, SearchView.OnQueryTextListener*/ {
             true
         } else super.onOptionsItemSelected(item)
 
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return true
+    }
+
+    override fun onQueryTextChange(query: String?): Boolean {
+        if(query != null){
+            searchDatabase(query)
+        }
+        return true
+    }
+
+    private fun searchDatabase(query: String) {
+        val searchQuery = "%$query%"
+
+        medicationsViewModel.searchDatabase(searchQuery).observe(this, { list ->
+            list.let {
+                medicationsAdapter?.setData(it as ArrayList<MedicationsModel>)
+            }
+        })
     }
 
     // инициализация адаптера
@@ -125,4 +147,5 @@ class Medicine : Fragment()/*, SearchView.OnQueryTextListener*/ {
         })
 
     }
+
 }

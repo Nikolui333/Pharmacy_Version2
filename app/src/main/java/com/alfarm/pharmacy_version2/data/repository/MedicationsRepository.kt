@@ -6,6 +6,7 @@ import com.alfarm.pharmacy_version2.data.dataSource.MedicationsApiDataSource
 import com.alfarm.pharmacy_version2.data.dataSource.MedicationsDataSource
 import com.alfarm.pharmacy_version2.data.models.MedicationsModel
 import com.alfarm.pharmacy_version2.domain.repository.MedicationsCall
+import kotlinx.coroutines.flow.Flow
 
 class MedicationsRepository (private val medicationsApiDataSource: MedicationsApiDataSource,
                              private val medicationsDataSource: MedicationsDataSource
@@ -19,5 +20,9 @@ class MedicationsRepository (private val medicationsApiDataSource: MedicationsAp
     override suspend fun startMigration(context: Context) {
        // medicationsDataSource.clear()
         medicationsApiDataSource.startMigration(context)
+    }
+
+    override fun searchDatabase(searchQuery: String): Flow<List<MedicationsModel>> {
+        return medicationsDataSource.searchDatabase(searchQuery)
     }
 }
