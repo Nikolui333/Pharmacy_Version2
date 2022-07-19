@@ -28,7 +28,7 @@
                         android:id="@+id/topMainMenu"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
-                        android:background="@color/black"
+                        android:background="@color/purple_700"
                         app:title="@string/app_name"
                         app:titleTextColor="@color/white"
                         style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
@@ -56,7 +56,7 @@
                 android:id="@+id/bottomMainMenu"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/black"
+                android:background="@color/purple_700"
                 android:elevation="16dp"
                 app:itemIconTint="@color/tab_color"
                 app:itemTextColor="@color/tab_color"

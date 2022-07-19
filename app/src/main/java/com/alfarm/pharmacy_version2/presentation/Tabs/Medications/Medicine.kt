@@ -42,8 +42,15 @@ class Medicine : Fragment(), SearchView.OnQueryTextListener {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         // TODO Auto-generated method stub
-        //  super.onCreateOptionsMenu(menu!!, inflater)
+       // super.onCreateOptionsMenu(menu!!, inflater)
         inflater.inflate(R.menu.main_menu, menu)
+
+        val search = menu?.findItem(R.id.menu_search)
+        val searchView = search?.actionView as? SearchView
+        searchView?.isSubmitButtonEnabled = true
+        searchView?.setOnQueryTextListener(this)
+
+     //   return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

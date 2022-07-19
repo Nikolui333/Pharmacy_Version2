@@ -21,7 +21,7 @@ class MedicationsUseCase (private val medicationsCall: MedicationsCall) {
 
     }
 
-    /*override*/ fun searchDatabase(searchQuery: String): Flow<List<MedicationsModel>> {
+    fun searchDatabase(searchQuery: String): Flow<List<MedicationsModel>> {
         return medicationsCall.searchDatabase(searchQuery)
     }
 }
