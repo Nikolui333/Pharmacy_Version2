@@ -2,6 +2,8 @@ package com.alfarm.pharmacy_version2.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import com.alfarm.pharmacy_version2.R
 import com.alfarm.pharmacy_version2.databinding.ActivityMainBinding
@@ -10,7 +12,7 @@ import com.alfarm.pharmacy_version2.presentation.Tabs.Medications.Medicine
 import com.alfarm.pharmacy_version2.presentation.viewModel.MedicationsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity()/*, SearchView.OnQueryTextListener*/ {
 
     private var binding: ActivityMainBinding? = null
 

@@ -23,4 +23,6 @@
     <string name="headerPropOne" tools:ignore="TypographyDashes">8 (495) 327-32-15</string>
     <string name="headerPropTwo" tools:ignore="TypographyDashes">Запрудня, ул. Первомайская, д. 6, помещения 34-42</string>
     <string name="descriptionProposal">Альянс-Фарм</string>
+
+    <string name="search">Search</string>
 </resources>

@@ -3,9 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/User/KotlinAndroidCours/Pharmacy_Version2/app/src/main/res/drawable-v24/ic_search.xml" value="0.124" />
         <entry key="..\:/User/KotlinAndroidCours/Pharmacy_Version2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.124" />
+        <entry key="..\:/User/KotlinAndroidCours/Pharmacy_Version2/app/src/main/res/layout/activity_main.xml" value="0.1766304347826087" />
         <entry key="..\:/User/KotlinAndroidCours/Pharmacy_Version2/app/src/main/res/layout/medicines_item.xml" value="0.22826086956521738" />
         <entry key="..\:/User/KotlinAndroidCours/Pharmacy_Version2/app/src/main/res/menu/bottom_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/User/KotlinAndroidCours/Pharmacy_Version2/app/src/main/res/menu/main_menu.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>
